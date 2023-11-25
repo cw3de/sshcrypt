@@ -1,0 +1,22 @@
+---
+# see https://clang.llvm.org/docs/ClangFormatStyleOptions.html
+Language: Cpp
+BasedOnStyle: LLVM
+AllowShortCaseLabelsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: InlineOnly
+AlwaysBreakTemplateDeclarations: false
+BinPackArguments: false
+BinPackParameters: false
+BreakBeforeBraces: Allman
+BreakBeforeBinaryOperators: All
+BreakConstructorInitializers: AfterColon
+ColumnLimit: 96
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+Cpp11BracedListStyle: false
+IncludeBlocks: Regroup
+KeepEmptyLinesAtTheStartOfBlocks: false
+PointerAlignment: Left
+SpaceBeforeParens: Never
+SpacesInParentheses: true
+SpacesInSquareBrackets: true
+...
