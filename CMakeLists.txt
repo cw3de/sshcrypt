@@ -5,7 +5,12 @@ project( sshcrypt )
 set( CMAKE_CXX_STANDARD 17 )
 set( CMAKE_CXX_STANDARD_REQUIRED True )
 
-enable_testing()
+option( ENABLE_DEBUG_MACRO "Enable debug macro" OFF )
+option( ENABLE_TESTING "Enable testing" OFF )
+
+if( ENABLE_TESTING )
+  enable_testing()
+endif()
 
 set( EXTRA_WARNINGS
     -Werror
@@ -16,7 +21,11 @@ set( EXTRA_WARNINGS
 
 find_package( OpenSSL REQUIRED )
 
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DENABLE_DEBUG_MACRO")
+if( ENABLE_DEBUG_MACRO )
+  add_definitions( -DENABLE_DEBUG_MACRO )
+endif()
+
+#set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DENABLE_DEBUG_MACRO")
 
 set( HEADERS
   AgentComm.h
@@ -60,31 +69,33 @@ target_compile_options( sshcrypt
   ${EXTRA_WARNINGS}
 )
 
+install( TARGETS sshcrypt DESTINATION bin )
 
 ########################################################
 
 
-add_executable( testsshcrypt
-  TestSshCrypt.cpp
-  ${HEADERS}
-  ${SOURCES}
-)
+if( ENABLE_TESTING )
+	add_executable( testsshcrypt
+	  TestSshCrypt.cpp
+	  ${HEADERS}
+	  ${SOURCES}
+	)
 
-target_link_libraries( testsshcrypt
-  PUBLIC
-  OpenSSL::Crypto
-  )
+	target_link_libraries( testsshcrypt
+	  PUBLIC
+	  OpenSSL::Crypto
+	  )
 
-target_include_directories( testsshcrypt
-  PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-  )
+	target_include_directories( testsshcrypt
+	  PUBLIC
+	    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+	  )
 
-target_compile_options( testsshcrypt
-  PUBLIC
-    ${EXTRA_WARNINGS}
-  )
-  
-add_test( NAME testsshcrypt COMMAND testsshcrypt )
+	target_compile_options( testsshcrypt
+	  PUBLIC
+	    ${EXTRA_WARNINGS}
+	  )
+	  
+	add_test( NAME testsshcrypt COMMAND testsshcrypt )
 
-
+endif()
