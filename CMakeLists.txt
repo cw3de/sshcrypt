@@ -75,27 +75,28 @@ install( TARGETS sshcrypt DESTINATION bin )
 
 
 if( ENABLE_TESTING )
-	add_executable( testsshcrypt
-	  TestSshCrypt.cpp
-	  ${HEADERS}
-	  ${SOURCES}
-	)
+  add_executable( testsshcrypt
+    TestMacros.h
+    TestSshCrypt.cpp
+    ${HEADERS}
+    ${SOURCES}
+  )
 
-	target_link_libraries( testsshcrypt
-	  PUBLIC
-	  OpenSSL::Crypto
-	  )
+  target_link_libraries( testsshcrypt
+    PUBLIC
+    OpenSSL::Crypto
+  )
 
-	target_include_directories( testsshcrypt
-	  PUBLIC
-	    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-	  )
+  target_include_directories( testsshcrypt
+    PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+  )
 
-	target_compile_options( testsshcrypt
-	  PUBLIC
-	    ${EXTRA_WARNINGS}
-	  )
-	  
-	add_test( NAME testsshcrypt COMMAND testsshcrypt )
+  target_compile_options( testsshcrypt
+    PUBLIC
+    ${EXTRA_WARNINGS}
+  )
+
+  add_test( NAME testsshcrypt COMMAND testsshcrypt )
 
 endif()

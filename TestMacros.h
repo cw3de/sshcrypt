@@ -27,6 +27,7 @@ inline std::string debugString( const SshCrypt::Data& value )
 }
 
 #define TEST_VERIFY( condition )                                                               \
+  do                                                                                           \
   {                                                                                            \
     if( !( condition ) )                                                                       \
     {                                                                                          \
@@ -34,9 +35,10 @@ inline std::string debugString( const SshCrypt::Data& value )
                                 + std::to_string( __LINE__ ) + std::string( " in " )           \
                                 + std::string( __PRETTY_FUNCTION__ ) );                        \
     }                                                                                          \
-  }
+  } while( false )
 
 #define TEST_COMPARE( x, y )                                                                   \
+  do                                                                                           \
   {                                                                                            \
     if( ( x ) != ( y ) )                                                                       \
     {                                                                                          \
@@ -45,16 +47,19 @@ inline std::string debugString( const SshCrypt::Data& value )
           + std::string( " in " ) + std::string( __PRETTY_FUNCTION__ ) + std::string( ": " )   \
           + debugString( ( x ) ) + std::string( " != " ) + debugString( ( y ) ) );             \
     }                                                                                          \
-  }
+  } while( false )
 
 #define TEST_RUN( func )                                                                       \
-  try                                                                                          \
+  do                                                                                           \
   {                                                                                            \
-    func();                                                                                    \
-    std::cout << "PASS " << #func << std::endl;                                                \
-  }                                                                                            \
-  catch( const std::runtime_error& ex )                                                        \
-  {                                                                                            \
-    std::cerr << "FAIL " << #func << " : " << ex.what() << std::endl;                          \
-    exit( 1 );                                                                                 \
-  }
+    try                                                                                        \
+    {                                                                                          \
+      func();                                                                                  \
+      std::cout << "PASS " << #func << std::endl;                                              \
+    }                                                                                          \
+    catch( const std::runtime_error& ex )                                                      \
+    {                                                                                          \
+      std::cerr << "FAIL " << #func << " : " << ex.what() << std::endl;                        \
+      exit( 1 );                                                                               \
+    }                                                                                          \
+  } while( false )

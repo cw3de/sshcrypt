@@ -26,7 +26,13 @@ AgentComm::AgentComm( std::string socketName )
 
   if( socketName.empty() )
   {
-    throw std::runtime_error{ "environment variable SSH_AUTH_SOCK not defined" }; // TODO
+    throw std::runtime_error{ "environment variable SSH_AUTH_SOCK not defined" };
+  }
+
+  constexpr auto maxNameLength = sizeof( sockaddr_un::sun_path );
+  if( socketName.size() >= maxNameLength )
+  {
+    throw std::runtime_error{ "unix domain socket path to long" };
   }
 
   sock = socket( PF_UNIX, SOCK_STREAM, 0 );
@@ -39,7 +45,7 @@ AgentComm::AgentComm( std::string socketName )
   struct sockaddr_un addr;
   memset( &addr, 0, sizeof addr );
   addr.sun_family = AF_UNIX;
-  strcpy( addr.sun_path, socketName.c_str() );
+  strncpy( addr.sun_path, socketName.c_str(), maxNameLength );
   if( connect( sock, reinterpret_cast<struct sockaddr*>( &addr ), sizeof addr ) == -1 )
   {
     // const int saveError = errno;

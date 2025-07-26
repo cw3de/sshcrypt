@@ -16,8 +16,8 @@ std::vector<Cryptor::Key> Cryptor::getAvailableKeys()
   std::vector<Key> result;
   SshCrypt::AgentComm agent;
 
-  auto identityList = agent.requestIdentities();
-  for( auto identity : identityList )
+  const auto identityList = agent.requestIdentities();
+  for( const auto& identity : identityList )
   {
     result.push_back( Key{ toBase64( ShaHash::check( identity.pubkey ), false ),
                            toString( identity.comment ) } );
@@ -29,7 +29,7 @@ Data Cryptor::getSessionKey( const Data& salt, const char* id )
 {
   SshCrypt::AgentComm agent;
 
-  auto identityList = agent.requestIdentities();
+  const auto identityList = agent.requestIdentities();
 
   if( identityList.empty() )
   {
@@ -40,7 +40,7 @@ Data Cryptor::getSessionKey( const Data& salt, const char* id )
 
   if( id )
   {
-    for( auto identity : identityList )
+    for( const auto& identity : identityList )
     {
       auto sha256 = toBase64( ShaHash::check( identity.pubkey ), false );
       LOG_DEBUG( sha256 << " " << SshCrypt::toString( identity.comment ) );

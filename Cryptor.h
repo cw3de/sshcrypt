@@ -3,8 +3,6 @@
 #pragma once
 #include "Data.h"
 
-#include <iostream>
-
 namespace SshCrypt
 {
 class Cryptor

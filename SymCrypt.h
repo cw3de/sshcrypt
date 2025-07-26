@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "AgentMessage.h"
+#include "Data.h"
 
 // aus <openssl/ossl_typ.h>
 typedef struct evp_cipher_ctx_st EVP_CIPHER_CTX;

@@ -4,7 +4,6 @@
 #include "Debug.h"
 
 #include <exception>
-#include <fstream>
 #include <getopt.h>
 #include <iostream>
 #include <sstream>
@@ -157,8 +156,8 @@ int main( int argc, char** argv )
     case Operation::Usage: usage( argv[ 0 ] ); break;
     case Operation::ListKeys:
     {
-      auto keys = SshCrypt::Cryptor::getAvailableKeys();
-      for( auto key : keys )
+      const auto keys = SshCrypt::Cryptor::getAvailableKeys();
+      for( const auto& key : keys )
       {
         std::cout << key.sha256 << " " << key.comment << std::endl;
       }
